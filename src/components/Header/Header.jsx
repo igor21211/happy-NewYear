@@ -1,16 +1,18 @@
+import { useDispatch } from "react-redux";
 import newYearGreetingsData from "../../data/data";
 import createWishWithID from "../../utils/createObjectWithID";
 import Button from "../Button/Button";
 import styles from "./Header.module.css";
-const Header = ({ createCong, showModalWindow }) => {
+import { addWish } from "../redux/slice/wishSlice";
+const Header = ({ showModalWindow }) => {
+  const dispatch = useDispatch();
   const handleRandomWish = () => {
     const index = Math.floor(Math.random() * newYearGreetingsData.length);
     const wish = newYearGreetingsData[index];
-    createCong(createWishWithID(wish));
+    dispatch(addWish(createWishWithID(wish)));
   };
 
   const handleShowWindow = () => {
-    console.log("here");
     showModalWindow();
   };
   return (

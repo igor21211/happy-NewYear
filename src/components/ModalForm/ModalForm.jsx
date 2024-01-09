@@ -2,8 +2,11 @@ import { useState } from "react";
 import styles from "./ModalForm.module.css";
 import Button from "../Button/Button";
 import createWishWithID from "../../utils/createObjectWithID";
+import { useDispatch } from "react-redux";
+import { addWish } from "../redux/slice/wishSlice";
 
-const ModalForm = ({ createNewWish }) => {
+const ModalForm = () => {
+  const dispatch = useDispatch();
   const [title, setTitle] = useState("");
   const [message, setMessage] = useState("");
   const [image, setImage] = useState("");
@@ -20,8 +23,7 @@ const ModalForm = ({ createNewWish }) => {
 
   const handleSubmitForm = (e) => {
     e.preventDefault();
-    createWishWithID({ title, message, image });
-    createNewWish(createWishWithID({ title, message, image }));
+    dispatch(addWish(createWishWithID({ title, message, image })));
     setTitle("");
     setMessage("");
     setImage("");

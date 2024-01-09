@@ -1,8 +1,11 @@
+import { useDispatch } from "react-redux";
 import Button from "../Button/Button";
 import styles from "./Congratulation.module.css";
-const Сongratulation = ({ id, title, message, image, deleteCon }) => {
+import { deleteWish } from "../redux/slice/wishSlice";
+const Сongratulation = ({ id, title, message, image }) => {
+  const dispatch = useDispatch();
   const handleDeleteCong = (id) => {
-    deleteCon(id);
+    dispatch(deleteWish(id));
   };
   return (
     <div className={styles["cart-container"]}>

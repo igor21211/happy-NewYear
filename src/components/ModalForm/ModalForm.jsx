@@ -1,13 +1,17 @@
-import { useState } from "react";
 import styles from "./ModalForm.module.css";
 import Button from "../Button/Button";
-import createWishWithID from "../../utils/createObjectWithID";
 
-const ModalForm = ({ createNewWish }) => {
-  const [title, setTitle] = useState("");
-  const [message, setMessage] = useState("");
-  const [image, setImage] = useState("");
-
+const ModalForm = ({
+  createNewWish,
+  title,
+  message,
+  image,
+  setTitle,
+  setImage,
+  setMessage,
+  updateCongratulations,
+  update,
+}) => {
   const handleSetValue = (e) => {
     setTitle(e.target.value);
   };
@@ -20,8 +24,13 @@ const ModalForm = ({ createNewWish }) => {
 
   const handleSubmitForm = (e) => {
     e.preventDefault();
-    createWishWithID({ title, message, image });
-    createNewWish(createWishWithID({ title, message, image }));
+    console.log(update);
+    if (update) {
+      updateCongratulations({ title, message, image, isFavorite: false });
+    }
+    if (!update) {
+      createNewWish({ title, message, image, isFavorite: false });
+    }
     setTitle("");
     setMessage("");
     setImage("");

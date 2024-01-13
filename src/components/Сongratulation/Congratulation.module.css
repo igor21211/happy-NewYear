@@ -24,3 +24,19 @@
   border-radius: 4px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 }
+.icon {
+  height: 30px;
+  width: 30px;
+  cursor: pointer;
+}
+.icon-cart {
+  color: #333;
+  height: 30px;
+  width: 30px;
+  cursor: pointer;
+}
+.action-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}

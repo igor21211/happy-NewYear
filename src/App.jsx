@@ -4,6 +4,7 @@ import ModalForm from "./components/ModalForm/ModalForm";
 import List from "./components/СongratulationsList/List";
 import Header from "./components/Header/Header";
 import { congratulationsList } from "./api";
+import Erorr from "./components/Erorr/Erorr";
 
 function App() {
   const [congratulations, setCongratulations] = useState([]);
@@ -13,41 +14,74 @@ function App() {
   const [image, setImage] = useState("");
   const [update, setUpdate] = useState(false);
   const [id, setId] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [erorrMsg, setErorr] = useState("");
 
   const createNewWish = async (congratulation) => {
-    const response = await congratulationsList.post(congratulation);
-    setCongratulations([...congratulations, response]);
+    setIsLoading(true);
+    try {
+      const response = await congratulationsList.post(congratulation);
+      setCongratulations([...congratulations, response]);
+      setErorr("Successfull!!");
+    } catch (error) {
+      setErorr(error.message);
+    } finally {
+      setIsActive(false);
+      setIsLoading(false);
+    }
   };
 
   const updateCongratulations = async (wish) => {
-    const response = await congratulationsList.put(wish, id);
-    const index = congratulations.findIndex((el) => el.id === id);
-    const updateCongratulations = congratulations;
-    updateCongratulations[index] = response;
-    setCongratulations([...updateCongratulations]);
+    setIsLoading(true);
+    try {
+      const response = await congratulationsList.put(wish, id);
+      const index = congratulations.findIndex((el) => el.id === id);
+      const updateCongratulations = congratulations;
+      updateCongratulations[index] = response;
+      setCongratulations([...updateCongratulations]);
+      setErorr("Successfull!!");
+    } catch (error) {
+      setErorr(error.message);
+    } finally {
+      setIsActive(false);
+      setIsLoading(false);
+    }
   };
 
   const fetchList = async () => {
-    const response = await congratulationsList.get();
-    const index = Math.floor(Math.random() * response.length);
-    const wish = response[index];
-    console.log(wish);
-    setCongratulations([...congratulations, wish]);
+    setIsLoading(true);
+    try {
+      const response = await congratulationsList.get();
+      const index = Math.floor(Math.random() * response.length);
+      const wish = response[index];
+      setCongratulations([...congratulations, wish]);
+      setErorr("Successfull!!");
+    } catch (error) {
+      setErorr(error.message);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const toggleIsFavorite = async (id) => {
-    const item = congratulations.find((el) => el.id === id);
-    const response = await congratulationsList.put(
-      { ...item, isFavorite: !item.isFavorite },
-      id,
-    );
-    const index = congratulations.findIndex((el) => el.id === id);
-    const updateCongratulations = congratulations;
-    updateCongratulations[index] = response;
-    setCongratulations([...updateCongratulations]);
+    try {
+      const item = congratulations.find((el) => el.id === id);
+      const response = await congratulationsList.put(
+        { ...item, isFavorite: !item.isFavorite },
+        id,
+      );
+      const index = congratulations.findIndex((el) => el.id === id);
+      const updateCongratulations = congratulations;
+      updateCongratulations[index] = response;
+      setCongratulations([...updateCongratulations]);
+      setErorr("Successfull add Like!!");
+    } catch (error) {
+      setErorr(error.message);
+    }
   };
 
   const renderItemsById = (id) => {
+    setIsLoading(true);
     const item = congratulations.find((el) => el.id === id);
     setId(id);
     setIsActive(true);
@@ -55,11 +89,17 @@ function App() {
     setMessage(item.message);
     setImage(item.image);
     setUpdate(true);
+    setIsLoading(false);
   };
   const deleteList = async (id) => {
-    congratulationsList.delete(id);
-    const newArr = congratulations.filter((cong) => cong.id !== id);
-    setCongratulations(newArr);
+    try {
+      const newArr = congratulations.filter((cong) => cong.id !== id);
+      congratulationsList.delete(id);
+      setCongratulations(newArr);
+      setErorr("Successfull!!");
+    } catch (error) {
+      setErorr(error.message);
+    }
   };
 
   const showModalWindow = () => {
@@ -68,7 +108,11 @@ function App() {
 
   return (
     <div className="App">
-      <Header createCong={fetchList} showModalWindow={showModalWindow} />
+      <Header
+        createCong={fetchList}
+        showModalWindow={showModalWindow}
+        isLoading={isLoading}
+      />
       {isActive && (
         <ModalForm
           title={title}
@@ -80,6 +124,7 @@ function App() {
           createNewWish={createNewWish}
           updateCongratulations={updateCongratulations}
           update={update}
+          isLoading={isLoading}
         />
       )}
       <List
@@ -87,7 +132,9 @@ function App() {
         update={toggleIsFavorite}
         cong={congratulations}
         deleteCon={deleteList}
+        isLoading={isLoading}
       />
+      <Erorr erorrMsg={erorrMsg} setErorr={setErorr} />
     </div>
   );
 }

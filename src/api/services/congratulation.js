@@ -5,7 +5,9 @@ export const congratulationsList = {
     api
       .get(`congratulation`)
       .then((res) => res.data)
-      .catch((error) => console.log(error)),
+      .catch((error) => {
+        throw new Error(error);
+      }),
   getById: (id) =>
     api
       .get(`congratulation/${id}`)

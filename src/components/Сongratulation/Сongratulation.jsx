@@ -3,6 +3,7 @@ import styles from "./Congratulation.module.css";
 import { FcLike } from "react-icons/fc";
 import { AiFillDelete } from "react-icons/ai";
 import { FcLikePlaceholder } from "react-icons/fc";
+import { FaSpinner } from "react-icons/fa";
 const Сongratulation = ({
   id,
   title,
@@ -12,6 +13,7 @@ const Сongratulation = ({
   isFavorite,
   update,
   renderItemsById,
+  isLoading,
 }) => {
   const handleDeleteCong = (id) => {
     deleteCon(id);
@@ -31,7 +33,9 @@ const Сongratulation = ({
             className={styles["icon"]}
           />
         )}
-        <Button onClick={() => renderItemsById(id)}>Edit</Button>
+        <Button disable={isLoading} onClick={() => renderItemsById(id)}>
+          {isLoading ? <FaSpinner className={styles["spinner"]} /> : "Edit"}
+        </Button>
         <AiFillDelete
           className={styles["icon-cart"]}
           onClick={() => handleDeleteCong(id)}

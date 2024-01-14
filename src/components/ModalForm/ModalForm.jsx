@@ -1,5 +1,6 @@
 import styles from "./ModalForm.module.css";
 import Button from "../Button/Button";
+import { FaSpinner } from "react-icons/fa";
 
 const ModalForm = ({
   createNewWish,
@@ -11,6 +12,7 @@ const ModalForm = ({
   setMessage,
   updateCongratulations,
   update,
+  isLoading,
 }) => {
   const handleSetValue = (e) => {
     setTitle(e.target.value);
@@ -58,7 +60,9 @@ const ModalForm = ({
           value={image}
           onChange={handleSetImage}
         />
-        <Button type="submit">Submit</Button>
+        <Button disabled={isLoading} type="submit">
+          {isLoading ? <FaSpinner className={styles["spinner"]} /> : "Submit"}
+        </Button>
       </form>
     </div>
   );

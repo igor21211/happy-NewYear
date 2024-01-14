@@ -26,7 +26,6 @@ const ModalForm = ({
 
   const handleSubmitForm = (e) => {
     e.preventDefault();
-    console.log(update);
     if (update) {
       updateCongratulations({ title, message, image, isFavorite: false });
     }

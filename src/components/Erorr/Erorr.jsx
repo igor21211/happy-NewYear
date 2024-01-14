@@ -4,7 +4,11 @@ import { useEffect } from "react";
 
 const Erorr = ({ erorrMsg, setErorr }) => {
   useEffect(() => {
-    if (erorrMsg.includes("404") && erorrMsg) {
+    if (
+      (erorrMsg.includes("Erorr") && erorrMsg) ||
+      erorrMsg.includes("failed") ||
+      erorrMsg.includes("404")
+    ) {
       toast.error(erorrMsg);
       setErorr("");
     }

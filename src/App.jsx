@@ -22,7 +22,7 @@ function App() {
     try {
       const response = await congratulationsList.post(congratulation);
       setCongratulations([...congratulations, response]);
-      setErorr("Successfull!!");
+      setErorr("Successfull Create!!");
     } catch (error) {
       setErorr(error.message);
     } finally {
@@ -39,12 +39,14 @@ function App() {
       const updateCongratulations = congratulations;
       updateCongratulations[index] = response;
       setCongratulations([...updateCongratulations]);
-      setErorr("Successfull!!");
+      setErorr("Successful Update!!");
+      setId("");
     } catch (error) {
       setErorr(error.message);
     } finally {
       setIsActive(false);
       setIsLoading(false);
+      setUpdate(false);
     }
   };
 
@@ -52,10 +54,13 @@ function App() {
     setIsLoading(true);
     try {
       const response = await congratulationsList.get();
+      if (response.length === 0) {
+        throw new Erorr("Api return 0 data");
+      }
       const index = Math.floor(Math.random() * response.length);
       const wish = response[index];
       setCongratulations([...congratulations, wish]);
-      setErorr("Successfull!!");
+      setErorr("Successful Random!!");
     } catch (error) {
       setErorr(error.message);
     } finally {
@@ -74,7 +79,7 @@ function App() {
       const updateCongratulations = congratulations;
       updateCongratulations[index] = response;
       setCongratulations([...updateCongratulations]);
-      setErorr("Successfull add Like!!");
+      setErorr("Successful add Like!!");
     } catch (error) {
       setErorr(error.message);
     }
@@ -96,7 +101,7 @@ function App() {
       const newArr = congratulations.filter((cong) => cong.id !== id);
       congratulationsList.delete(id);
       setCongratulations(newArr);
-      setErorr("Successfull!!");
+      setErorr("Successful Deleted!!");
     } catch (error) {
       setErorr(error.message);
     }

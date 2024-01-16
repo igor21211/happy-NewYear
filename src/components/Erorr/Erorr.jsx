@@ -1,9 +1,11 @@
 import { Bounce, ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useEffect } from "react";
+import { Component } from "react";
 
-const Erorr = ({ erorrMsg, setErorr }) => {
-  useEffect(() => {
+class Erorr extends Component {
+  componentDidUpdate(prevProps) {
+    const { erorrMsg, setErorr } = this.props;
+
     if (
       (erorrMsg.includes("Erorr") && erorrMsg) ||
       erorrMsg.includes("failed") ||
@@ -12,27 +14,30 @@ const Erorr = ({ erorrMsg, setErorr }) => {
       toast.error(erorrMsg);
       setErorr("");
     }
-    if (erorrMsg.includes("Success")) {
+
+    if (erorrMsg.includes("Success") && erorrMsg !== prevProps.erorrMsg) {
       toast.success(erorrMsg);
       setErorr("");
     }
-  }, [erorrMsg, setErorr]);
+  }
 
-  return (
-    <ToastContainer
-      position="top-center"
-      autoClose={5000}
-      hideProgressBar
-      newestOnTop={false}
-      closeOnClick
-      rtl={false}
-      pauseOnFocusLoss
-      draggable
-      pauseOnHover
-      theme="light"
-      transition={Bounce}
-    />
-  );
-};
+  render() {
+    return (
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+        transition={Bounce}
+      />
+    );
+  }
+}
 
 export default Erorr;
